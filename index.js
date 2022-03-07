@@ -54,7 +54,7 @@ app.get('/', async (req, res) => {
         if (error) {
             return res.status(503).end("error on count");
         }
-        mongoose.disconnect();
+        
         res.set({
             'content-type': 'image/svg+xml',
             'cache-control': 'max-age=0, no-cache, no-store, must-revalidate'

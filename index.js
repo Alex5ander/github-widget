@@ -30,15 +30,14 @@ app.get('/', async (req, res) => {
     
     mongoose.connect(process.env.DATABASEURI, (error) => {
         if (error) {
-            return res.status(503).end();
+            return res.status(503).end("database connection error");
         }
     });
 
     const visit = new Visit();
     visit.save(error => {
-        mongoose.disconnect();
         if (error) {
-            return res.status(503).end();
+            return res.status(503).end("error on save");
         }
     })
 
@@ -53,9 +52,9 @@ app.get('/', async (req, res) => {
 
     Visit.count({}, (error, result) => {
         if (error) {
-            return res.status(503).end();
+            return res.status(503).end("error on count");
         }
-
+        mongoose.disconnect();
         res.set({
             'content-type': 'image/svg+xml',
             'cache-control': 'max-age=0, no-cache, no-store, must-revalidate'

@@ -60,18 +60,20 @@ app.get('/', async (req, res) => {
             'cache-control': 'max-age=0, no-cache, no-store, must-revalidate'
         });
         res.send(`
-            <svg version="1.1" style="background-color:#fff" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 300 160" width="18.75rem" height="10rem">
-                <image xlink:href="${condition.icon}" x="7.375rem" style="background-color:red" width="4rem" height="4rem" />    
+            <svg version="1.1" style="background-color:#fff" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 300 100" width="18.75rem" height="100">
+                <text x="50%" y="2rem" dominant-baseline="middle" font-size="2rem" text-anchor="middle" >
+                    ${current.temp_c} º
+                </text>
 
-                <text x="50%" y="5rem" dominant-baseline="middle" font-size="1rem" text-anchor="middle" >
+                <text x="50%" y="3rem" dominant-baseline="middle" font-size="1rem" text-anchor="middle" >
                     ${condition.text}\n
                 </text>
 
-                <text x="50%" y="7rem" dominant-baseline="middle" font-size="1rem" text-anchor="middle" >
-                    Faz ${current.temp_c} º em ${location.name} ${location.region}, ${location.country}.
+                <text x="50%" y="4rem" dominant-baseline="middle" font-size="1rem" text-anchor="middle" >
+                    ${location.name} ${location.region}, ${location.country}.
                 </text>
 
-                <text x="50%" y="9rem" dominant-baseline="middle" font-size="1rem" text-anchor="middle" >
+                <text x="50%" y="5rem" dominant-baseline="middle" font-size="1rem" text-anchor="middle" >
                     Total de visitas: ${result} 
                 </text>
             </svg>

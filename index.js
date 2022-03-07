@@ -27,7 +27,7 @@ app.listen(3000, () => {
 });
 
 app.get('/', async (req, res) => {
-    
+
     mongoose.connect(process.env.DATABASEURI, (error) => {
         if (error) {
             return res.status(503).end("database connection error");

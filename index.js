@@ -65,15 +65,15 @@ app.get('/', async (req, res) => {
                     ${current.temp_c} º
                 </text>
 
-                <text x="50%" y="3rem" dominant-baseline="middle" font-size="1rem" text-anchor="middle" >
+                <text x="50%" y="4rem" dominant-baseline="middle" font-size="1rem" text-anchor="middle" >
                     ${condition.text}\n
                 </text>
 
-                <text x="50%" y="4rem" dominant-baseline="middle" font-size="1rem" text-anchor="middle" >
+                <text x="50%" y="6rem" dominant-baseline="middle" font-size="1rem" text-anchor="middle" >
                     ${location.name} ${location.region}, ${location.country}.
                 </text>
 
-                <text x="50%" y="5rem" dominant-baseline="middle" font-size="1rem" text-anchor="middle" >
+                <text x="50%" y="8rem" dominant-baseline="middle" font-size="1rem" text-anchor="middle" >
                     Total de visitas: ${result} 
                 </text>
             </svg>

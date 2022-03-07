@@ -19,6 +19,9 @@
     "de",
     "vistas"
   ],
+  "engines": {
+    "node": "14.17.4"
+  },
   "author": "Alexsander Gutierrez Gonçalves",
   "license": "ISC"
 }

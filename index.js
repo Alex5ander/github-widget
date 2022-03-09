@@ -46,7 +46,7 @@ app.get('/', async (req, res) => {
     const { data, error } = await getCurrentForecast();
 
     if (error) {
-        return res.status(503).end();
+        return res.status(503).end("error on getCurrentForecast");
     }
 
     const { current, location } = data;

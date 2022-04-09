@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Visit = require("./models/Visit");
 const fetch = require("node-fetch");
 const imageToBase64 = require("image-to-base64");
+const { readFileSync } = require ('fs');
 
 require("dotenv").config();
 

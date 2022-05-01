@@ -62,7 +62,7 @@ app.get('/', async (req, res) => {
             'content-type': 'image/svg+xml',
             'cache-control': 'max-age=0, no-cache, no-store, must-revalidate'
         });
-        const color = `hsl(${Math.floor(360 / current.temp_c)},100%,50%)`;
+        const color = `hsl(${360-Math.floor(360 / current.temp_c)},100%,50%)`;
         res.send(`
             <svg version="1.1" style="background-color:${color}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 300 192" width="18.75rem" height="12rem">
                 <image x="7.375rem" xlink:href="data:image/png;base64,${b64}" />

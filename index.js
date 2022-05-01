@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const Visit = require('./models/Visit');
 const fetch = require("node-fetch");
 const imageToBase64 = require('image-to-base64');
-const backgroundColors = ["#bee4e7", "#9ddbf0", "#d3bedd", "#f4cfe1", "#f8c9d3", "#fbf6bc"];
 
 require("dotenv").config();
 
@@ -63,7 +62,7 @@ app.get('/', async (req, res) => {
             'content-type': 'image/svg+xml',
             'cache-control': 'max-age=0, no-cache, no-store, must-revalidate'
         });
-        const color = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+        const color = `hsl(${Math.floor(360 / )},100%,50%)`;
         res.send(`
             <svg version="1.1" style="background-color:${color}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 300 192" width="18.75rem" height="12rem">
                 <image x="7.375rem" xlink:href="data:image/png;base64,${b64}" />

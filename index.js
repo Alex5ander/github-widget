@@ -26,6 +26,8 @@ const app = express();
 
 app.listen(3000, () => {
     console.log("Server started");
+    const date = new Date().toLocaleString('pt-BR', {timeZone:'America/Sao_Paulo' });
+    console.log(date.split('/'));
 });
 
 app.get('/', async (req, res) => {

@@ -26,12 +26,30 @@ const app = express();
 
 app.listen(3000, () => {
     console.log("Server started");
-    const date = new Date().toLocaleString('pt-BR', {timeZone:'America/Sao_Paulo' });
-    console.log(date.split('/'));
 });
 
 app.get('/', async (req, res) => {
-    let count = 0;
+    const date = new Date();
+    const localeDate = date.toLocaleDateString("pt-BR", {timeZone: "America/Sao_Paulo"}).split('/');
+    const localeTime = date.toLocaleTimeString("pt-BR", {timeZone: "America/Sao_Paulo"}).split(':');
+
+    const day = localeDate[0];
+    const month = localeDate[1];
+    const year = localeDate[2];
+
+    const hours = localeTime[0];
+    const minutes = localeTime[1];
+    const seconds = localeTime[2];
+
+    const { data, error } = await getCurrentForecast();
+
+    if (error) {
+        return res.status(503).end("error on get forecast");
+    }
+
+    const { current, location } = data;
+    const condition = current.condition;
+    const b64 = await imageToBase64('https:' + current.condition.icon);
 
     mongoose.connect(process.env.DATABASEURI, (error) => {
         if (error) {
@@ -48,52 +66,40 @@ app.get('/', async (req, res) => {
                 if (error) {
                     return res.status(503).end("error on count visits");
                 }
-                count = result;
+
                 mongoose.connection.close();
+
+                let color = `rgb(0, ${255 - (255 / 23) * hours}, 255)`;
+
+                res.set({
+                    'content-type': 'image/svg+xml',
+                    'cache-control': 'max-age=0, no-cache, no-store, must-revalidate'
+                });
+
+                res.send(`
+                    <svg version="1.1" style="background-color:${color}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 648 192" width="648px" height="192px">
+                        <image x="292px" xlink:href="data:image/png;base64,${b64}" />
+                        
+                        <text x="50%" y="80px" dominant-baseline="middle" font-size="32px" text-anchor="middle" fill="#fff" >
+                            ${current.temp_c} º
+                        </text>
+
+                        <text x="50%" y="112px" dominant-baseline="middle" font-size="16px" text-anchor="middle" fill="#fff" >
+                            ${condition.text}\n
+                        </text>
+
+                        <text x="50%" y="144px" dominant-baseline="middle" font-size="16px" text-anchor="middle" fill="#fff" >
+                            ${location.name} ${location.region}, ${location.country}.
+                        </text>
+
+                        <text x="50%" y="176px" dominant-baseline="middle" font-size="16px" text-anchor="middle" fill="#fff" >
+                            Total de visitas: ${result} 
+                        </text>
+                    </svg>
+                `);
+
             });
 
         });
     });
-
-    const { data, error } = await getCurrentForecast();
-
-    if (error) {
-        return res.status(503).end("error on get forecast");
-    }
-
-    const { current, location } = data;
-    const condition = current.condition;
-    const b64 = await imageToBase64('https:' + current.condition.icon);
-
-    let color = 'rgb(192, 0, 0)';
-    if(current.temp_c < 18) {
-        color =  'rgb(0, 0, 192)';
-    }
-
-    res.set({
-        'content-type': 'image/svg+xml',
-        'cache-control': 'max-age=0, no-cache, no-store, must-revalidate'
-    });
-
-    res.send(`
-        <svg version="1.1" style="background-color:${color}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 300 192" width="300px" height="192px">
-            <image x="118px" xlink:href="data:image/png;base64,${b64}" />
-            
-            <text x="50%" y="80px" dominant-baseline="middle" font-size="32px" text-anchor="middle" fill="#fff" >
-                ${current.temp_c} º
-            </text>
-
-            <text x="50%" y="112px" dominant-baseline="middle" font-size="16px" text-anchor="middle" fill="#fff" >
-                ${condition.text}\n
-            </text>
-
-            <text x="50%" y="144px" dominant-baseline="middle" font-size="16px" text-anchor="middle" fill="#fff" >
-                ${location.name} ${location.region}, ${location.country}.
-            </text>
-
-            <text x="50%" y="176px" dominant-baseline="middle" font-size="16px" text-anchor="middle" fill="#fff" >
-                Total de visitas: ${count} 
-            </text>
-        </svg>
-    `);
 })

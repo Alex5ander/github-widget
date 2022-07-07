@@ -51,6 +51,24 @@ app.get('/', async (req, res) => {
     const condition = current.condition;
     const b64 = await imageToBase64('https:' + current.condition.icon);
 
+    let message = '';
+
+    if(hours > 17) {
+        message = "Boa noite";
+    } else if(hours > 12) {
+        message =  "Boa tarde";
+    } else if(hours > 6) {
+        message =  "Bom dia";
+    }
+
+    if(day === 13 && month === 9) {
+        message = "Feliz dia do programador!";
+    }
+
+    if(day === 25 && month === 12) {
+        message = "Feliz natal!";
+    }
+
     mongoose.connect(process.env.DATABASEURI, (error) => {
         if (error) {
             return res.status(503).end("database connection error");
@@ -77,7 +95,7 @@ app.get('/', async (req, res) => {
                 });
 
                 res.send(`
-                    <svg version="1.1" style="background-color:${color}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 648 192" width="648px" height="192px">
+                    <svg version="1.1" style="background-color:${color}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 648 224" width="648px" height="224px">
                         <image x="292px" xlink:href="data:image/png;base64,${b64}" />
                         
                         <text x="50%" y="80px" dominant-baseline="middle" font-size="32px" text-anchor="middle" fill="#fff" >
@@ -94,6 +112,14 @@ app.get('/', async (req, res) => {
 
                         <text x="50%" y="176px" dominant-baseline="middle" font-size="16px" text-anchor="middle" fill="#fff" >
                             Total de visitas: ${result} 
+                        </text>
+
+                        <text x="50%" y="176px" dominant-baseline="middle" font-size="16px" text-anchor="middle" fill="#fff" >
+                            Total de visitas: ${result} 
+                        </text>
+
+                        <text x="50%" y="208px" dominant-baseline="middle" font-size="16px" text-anchor="middle" fill="#fff" >
+                            ${message} 
                         </text>
                     </svg>
                 `);

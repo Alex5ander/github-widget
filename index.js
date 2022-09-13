@@ -61,11 +61,11 @@ app.get('/', async (req, res) => {
         message =  "Bom dia";
     }
 
-    if(day === 13 && month === 9) {
+    if(day === "13" && month === "09") {
         message = "Feliz dia do programador!";
     }
 
-    if(day === 25 && month === 12) {
+    if(day === "25" && month === "12") {
         message = "Feliz natal!";
     }
 

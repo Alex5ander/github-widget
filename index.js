@@ -114,10 +114,6 @@ app.get('/', async (req, res) => {
                             Total de visitas: ${result} 
                         </text>
 
-                        <text x="50%" y="176px" dominant-baseline="middle" font-size="16px" text-anchor="middle" fill="#fff" >
-                            Total de visitas: ${result} 
-                        </text>
-
                         <text x="50%" y="208px" dominant-baseline="middle" font-size="16px" text-anchor="middle" fill="#fff" >
                             ${message} 
                         </text>

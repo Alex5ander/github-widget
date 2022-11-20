@@ -40,7 +40,7 @@ const connectToDataBase = async () => {
     return cluster;
   } catch (error) {
     console.error(error);
-    return null;
+    throw error;
   }
 };
 

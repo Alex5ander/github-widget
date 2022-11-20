@@ -3,11 +3,11 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { MongoClient } from 'mongodb';
 import Visit from '../../models/Visit';
 import { WeatherResponse, getWeather } from './weather';
-import fs from 'fs';
 
 const getMessage = () => {
   const today = new Date();
-  const hours = today.getHours();
+  const localTime = today.toLocaleTimeString('pt-br');
+  const hours = parseInt(localTime.split(':')[0], 10);
   const day = today.getDate();
   const month = today.getMonth();
 
@@ -30,7 +30,8 @@ const getMessage = () => {
 
 const getColor = () => {
   const today = new Date();
-  const hours = today.getHours();
+  const localTime = today.toLocaleTimeString('pt-br');
+  const hours = parseInt(localTime.split(':')[0], 10);
   const color = `rgb(0, ${255 - (255 / 23) * hours}, 255)`;
   return color;
 };

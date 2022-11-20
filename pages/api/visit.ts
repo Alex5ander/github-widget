@@ -6,8 +6,7 @@ import { WeatherResponse, getWeather } from './weather';
 
 const getMessage = () => {
   const today = new Date();
-  const localTime = today.toLocaleTimeString('pt-br');
-  const hours = parseInt(localTime.split(':')[0], 10);
+  const hours = today.getUTCHours();
   const day = today.getDate();
   const month = today.getMonth();
 
@@ -30,8 +29,7 @@ const getMessage = () => {
 
 const getColor = () => {
   const today = new Date();
-  const localTime = today.toLocaleTimeString('pt-br');
-  const hours = parseInt(localTime.split(':')[0], 10);
+  const hours = today.getUTCHours();
   const color = `rgb(0, ${255 - (255 / 23) * hours}, 255)`;
   return color;
 };

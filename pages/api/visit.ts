@@ -6,8 +6,7 @@ import { WeatherResponse, getWeather } from './weather';
 
 const getMessage = () => {
   const today = new Date();
-  const localTime = today.toLocaleTimeString('pt-br');
-  const hours = parseInt(localTime.split(':')[0], 10);
+  const hours = today.getUTCHours();
   const day = today.getDate();
   const month = today.getMonth();
 
@@ -30,31 +29,39 @@ const getMessage = () => {
 
 const getColor = () => {
   const today = new Date();
-  const localTime = today.toLocaleTimeString('pt-br');
-  const hours = parseInt(localTime.split(':')[0], 10);
+  const hours = today.getUTCHours();
   const color = `rgb(0, ${255 - (255 / 23) * hours}, 255)`;
   return color;
 };
 
 const connectToDataBase = async () => {
-  const cluster = await MongoClient.connect(process.env.DATABASEURI!);
-  return cluster;
+  try {
+    const cluster = await MongoClient.connect(process.env.DATABASEURI!);
+    return cluster;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };
 
 const insertVisit = async () => {
   const cluster = await connectToDataBase();
 
-  const db = cluster.db('widget');
+  if (cluster) {
+    const db = cluster.db('widget');
 
-  const collection = db.collection('visits');
+    const collection = db.collection('visits');
 
-  await collection.insertOne(Visit());
+    await collection.insertOne(Visit());
 
-  const visits = await collection.countDocuments();
+    const visits = await collection.countDocuments();
 
-  cluster.close();
+    cluster.close();
 
-  return visits;
+    return visits;
+  }
+
+  return 0;
 };
 
 const pngToBase64 = async (uri: string) => {

@@ -5,8 +5,6 @@ import Visit from '../../models/Visit';
 import { WeatherResponse, getWeather } from './weather';
 import fs from 'fs';
 
-const decoratorWeather = () => {};
-
 const getMessage = () => {
   const today = new Date();
   const hours = today.getHours();

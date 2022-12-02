@@ -4,9 +4,8 @@ import { MongoClient } from 'mongodb';
 import Visit from '../../models/Visit';
 import { WeatherResponse, getWeather } from './weather';
 
-const getMessage = () => {
+const getMessage = (hours: number) => {
   const today = new Date();
-  const hours = today.getUTCHours();
   const day = today.getDate();
   const month = today.getMonth();
 
@@ -27,9 +26,7 @@ const getMessage = () => {
   }
 };
 
-const getColor = () => {
-  const today = new Date();
-  const hours = today.getUTCHours();
+const getColor = (hours: number) => {
   const color = `rgb(0, ${255 - (255 / 23) * hours}, 255)`;
   return color;
 };
@@ -78,8 +75,10 @@ export default async function handler(
   const data: WeatherResponse = await getWeather();
   const { current, location } = data;
   const { condition } = current;
-  const message = getMessage();
-  const color = getColor();
+  const time = location.localtime.split(' ')[1];
+  const hours = parseInt(time.split(':')[0], 10);
+  const color = getColor(hours);
+  const message = getMessage(hours);
 
   const iconBase64 = await pngToBase64(condition.icon);
 

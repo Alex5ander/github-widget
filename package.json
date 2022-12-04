@@ -15,13 +15,13 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "typescript": "4.9.3",
-    "eslint": "8.28.0",
-    "eslint-config-next": "13.0.4",
+    "@types/mongodb": "^4.0.7",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
-    "@types/mongodb": "^4.0.7",
-    "vercel": "^28.5.5"
+    "eslint": "8.28.0",
+    "eslint-config-next": "13.0.4",
+    "typescript": "4.9.3",
+    "vercel": "^28.7.2"
   }
 }

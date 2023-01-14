@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { MongoClient } from 'mongodb';
 import Visit from '../../models/Visit';
 import { WeatherResponse, getWeather } from './weather';
+let cluster: MongoClient = global.mongoose;
 
 const getMessage = (hours: number) => {
   const today = new Date();
@@ -33,8 +34,7 @@ const getColor = (hours: number) => {
 
 const connectToDataBase = async () => {
   try {
-    const cluster = await MongoClient.connect(process.env.DATABASEURI!);
-    return cluster;
+    return MongoClient.connect(process.env.DATABASEURI!);
   } catch (error) {
     console.error(error);
     throw error;
@@ -42,7 +42,9 @@ const connectToDataBase = async () => {
 };
 
 const insertVisit = async () => {
-  const cluster = await connectToDataBase();
+  if (!cluster) {
+    cluster = await connectToDataBase();
+  }
 
   if (cluster) {
     const db = cluster.db('widget');
@@ -52,8 +54,6 @@ const insertVisit = async () => {
     await collection.insertOne(Visit());
 
     const visits = await collection.countDocuments();
-
-    cluster.close();
 
     return visits;
   }

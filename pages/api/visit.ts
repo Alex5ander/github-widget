@@ -85,7 +85,7 @@ export default async function handler(
   res.setHeader('content-type', 'image/svg+xml');
   res.setHeader(
     'cache-control',
-    'max-age=1800, no-store, no-cache, must-revalidate'
+    'max-age=60, no-store, no-cache, must-revalidate'
   );
   res.send(
     `

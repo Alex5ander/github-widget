@@ -7,7 +7,7 @@ export default function Home() {
     (async () => {
       const data = await fetch('/api/visit');
       const svg = await data.text();
-      ref?.current.innerHTML = svg;
+      ref?.current?.innerHTML = svg;
     })();
   }, []);
 

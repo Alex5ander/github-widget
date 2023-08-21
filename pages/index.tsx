@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 export default function Home() {
-  const ref = useRef<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     (async () => {

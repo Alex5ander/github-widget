@@ -1,5 +1,5 @@
 export const getServerSideProps = async () => {
-  const data = await fetch('http://localhost:3000/api/visit');
+  const data = await fetch(process.env.URL + '/api/visit');
   const svg = await data.text();
   return { props: { svg } };
 };

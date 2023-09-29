@@ -1,17 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+export const getServerSideProps = async () => {
+  const data = await fetch('http://localhost:3000/api/visit');
+  const svg = await data.text();
+  return { props: { svg } };
+};
 
-export default function Home() {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    (async () => {
-      const data = await fetch('/api/visit');
-      const svg = await data.text();
-      if(ref.current) {
-        ref.current.innerHTML = svg;
-      }
-    })();
-  }, []);
-
-  return <div ref={ref}></div>;
+export default function Home(props: any) {
+  return <div dangerouslySetInnerHTML={{ __html: props.svg }}></div>;
 }

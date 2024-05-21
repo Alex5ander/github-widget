@@ -36,12 +36,9 @@ const getColor = (hours) => {
 
 const connectToDataBase = async () => {
   try {
-    if (process.env.DATABASEURI) {
-      throw new Error("not found DATABASEURI");
-    }
     return new MongoClient(process.env.DATABASEURI);
   } catch (error) {
-    console.error(error);
+    console.error(process.env);
     throw error;
   }
 };

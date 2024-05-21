@@ -1,5 +1,5 @@
-import express from 'express';
-import visit from './visit.js';
+const express = require('express');
+const visit = require('./visit.js');
 
 const app = express();
 

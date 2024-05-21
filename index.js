@@ -1,12 +1,18 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import { MongoClient } from 'mongodb';
-import Visit from '../../models/Visit';
-import { WeatherResponse, getWeather } from './weather';
+import Visit from './src/models/Visit.js';
+import { getWeather } from './src/weather.js';
 import { config } from 'dotenv';
 config();
-let cluster: MongoClient = global.mongoose;
+import express from 'express';
+const app = express();
 
-const getMessage = (hours: number) => {
+app.listen(3000);
+
+/** @type {MongoClient} */
+let cluster = global.mongoose;
+
+/** @param {number} hours */
+const getMessage = (hours) => {
   const today = new Date();
   const day = today.getDate();
   const month = today.getMonth();
@@ -28,14 +34,15 @@ const getMessage = (hours: number) => {
   }
 };
 
-const getColor = (hours: number) => {
+/** @param {number} hours */
+const getColor = (hours) => {
   const color = `rgb(0, ${255 - (255 / 23) * hours}, 255)`;
   return color;
 };
 
 const connectToDataBase = async () => {
   try {
-    return new MongoClient(process.env.DATABASEURI!);
+    return new MongoClient(process.env.DATABASEURI);
   } catch (error) {
     console.error(error);
     throw error;
@@ -62,18 +69,16 @@ const insertVisit = async () => {
   return 0;
 };
 
-const pngToBase64 = async (uri: string) => {
+/** @param {string} uri */
+const pngToBase64 = async (uri) => {
   const request = await fetch(uri.replace('//', 'https://'));
   const arrayBuffer = await request.arrayBuffer();
   return Buffer.from(arrayBuffer).toString('base64');
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+app.get("/api/visit", async (_, res) => {
   const totalVisitis = await insertVisit();
-  const data: WeatherResponse = await getWeather();
+  const data = await getWeather();
   const { current, location } = data;
   const { condition } = current;
   const time = location.localtime.split(' ')[1];
@@ -115,4 +120,4 @@ export default async function handler(
   </svg>
     `
   );
-}
+});

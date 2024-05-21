@@ -1,7 +1,5 @@
 import express from 'express';
-import { config } from 'dotenv';
 import visit from './visit.js';
-config();
 
 const app = express();
 

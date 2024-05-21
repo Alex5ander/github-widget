@@ -1,6 +1,6 @@
-import { MongoClient } from 'mongodb';
-import Visit from '../src/models/Visit.js';
-import { getWeather } from '../src/weather.js';
+const { MongoClient } = require('mongodb');
+const Visit = require('../src/models/Visit.js');
+const { getWeather } = require('../src/weather.js');
 
 /** @type {MongoClient} */
 let cluster = global.mongoose;
@@ -72,7 +72,7 @@ const pngToBase64 = async (uri) => {
 
 
 /** @type {import('express').RequestHandler} */
-export default async (_, res) => {
+module.exports = async (_, res) => {
   const totalVisitis = await insertVisit();
   const data = await getWeather();
   const { current, location } = data;

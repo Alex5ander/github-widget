@@ -71,10 +71,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.url === '/favicon.ico') {
-    res.status(204).end();
-    return;
-  }
   const totalVisitis = await insertVisit();
   const data: WeatherResponse = await getWeather();
   const { current, location } = data;

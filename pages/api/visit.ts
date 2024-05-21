@@ -36,6 +36,7 @@ const connectToDataBase = async () => {
   try {
     return new MongoClient(process.env.DATABASEURI!);
   } catch (error) {
+    console.log("Database connection error");
     console.error(error);
     throw error;
   }

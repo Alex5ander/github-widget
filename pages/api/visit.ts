@@ -36,7 +36,6 @@ const connectToDataBase = async () => {
   try {
     return new MongoClient(process.env.DATABASEURI!);
   } catch (error) {
-    console.log("Database connection error");
     console.error(error);
     throw error;
   }
@@ -72,7 +71,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const totalVisitis = await insertVisit();
+  const totalVisitis = 1; // await insertVisit();
   const data: WeatherResponse = await getWeather();
   const { current, location } = data;
   const { condition } = current;

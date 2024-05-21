@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
-import Visit from '../models/Visit.js';
-import { getWeather } from '../weather.js';
+import Visit from '../src/models/Visit.js';
+import { getWeather } from '../src/weather.js';
 
 /** @type {MongoClient} */
 let cluster = global.mongoose;

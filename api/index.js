@@ -1,5 +1,7 @@
 const express = require('express');
 const visit = require('./visit.js');
+const { config } = require('dotenv');
+config();
 
 const app = express();
 

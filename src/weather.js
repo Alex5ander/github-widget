@@ -40,16 +40,18 @@ class WeatherResponse {
   };
 }
 
-export const getWeather = async () => {
-  try {
-    const current_forecast_uri = `http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY
-      }&q=${encodeURI('Itapeva, São Paulo')}&aqi=no&lang=pt`;
-    const request = await fetch(current_forecast_uri);
+module.exports = {
+  getWeather: async () => {
+    try {
+      const current_forecast_uri = `http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY
+        }&q=${encodeURI('Itapeva, São Paulo')}&aqi=no&lang=pt`;
+      const request = await fetch(current_forecast_uri);
 
-    /** @type {WeatherResponse} */
-    const json = await request.json();
-    return json;
-  } catch (error) {
-    throw error;
+      /** @type {WeatherResponse} */
+      const json = await request.json();
+      return json;
+    } catch (error) {
+      throw error;
+    }
   }
-};
+}

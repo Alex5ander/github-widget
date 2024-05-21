@@ -1,1 +1,1 @@
-<img width="100%" title="Widget customizado feito utilizando express e mongodb" alt="Se isso não carregou da primeira vez, recarregue a página pois o servidor desliga automaticamente" src="https://github-widget-pi.vercel.app/api/visit" />
+# Github widget

@@ -1,8 +1,9 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { MongoClient } from 'mongodb';
 import Visit from '../../models/Visit';
 import { WeatherResponse, getWeather } from './weather';
+import { config } from 'dotenv';
+config();
 let cluster: MongoClient = global.mongoose;
 
 const getMessage = (hours: number) => {
@@ -32,34 +33,34 @@ const getColor = (hours: number) => {
   return color;
 };
 
-// const connectToDataBase = async () => {
-//   try {
-//     return new MongoClient(process.env.DATABASEURI!);
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// };
+const connectToDataBase = async () => {
+  try {
+    return new MongoClient(process.env.DATABASEURI!);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
-// const insertVisit = async () => {
-//   if (!cluster) {
-//     cluster = await connectToDataBase();
-//   }
+const insertVisit = async () => {
+  if (!cluster) {
+    cluster = await connectToDataBase();
+  }
 
-//   if (cluster) {
-//     const db = cluster.db('widget');
+  if (cluster) {
+    const db = cluster.db('widget');
 
-//     const collection = db.collection('visits');
+    const collection = db.collection('visits');
 
-//     await collection.insertOne(Visit());
+    await collection.insertOne(Visit());
 
-//     const visits = await collection.countDocuments();
+    const visits = await collection.countDocuments();
 
-//     return visits;
-//   }
+    return visits;
+  }
 
-//   return 0;
-// };
+  return 0;
+};
 
 const pngToBase64 = async (uri: string) => {
   const request = await fetch(uri.replace('//', 'https://'));
@@ -71,7 +72,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const totalVisitis = 1; //await insertVisit();
+  const totalVisitis = await insertVisit();
   const data: WeatherResponse = await getWeather();
   const { current, location } = data;
   const { condition } = current;

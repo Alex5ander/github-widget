@@ -34,7 +34,7 @@ const getColor = (hours: number) => {
 
 const connectToDataBase = async () => {
   try {
-    return MongoClient.connect(process.env.DATABASEURI!);
+    return new MongoClient(process.env.DATABASEURI!);
   } catch (error) {
     console.error(error);
     throw error;

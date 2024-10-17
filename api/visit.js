@@ -1,6 +1,7 @@
-const { MongoClient } = require('mongodb');
-const Visit = require('../src/models/Visit.js');
-const { getWeather } = require('../src/weather.js');
+const { MongoClient } = require("mongodb");
+const Visit = require("../src/models/Visit.js");
+const { getWeather } = require("../src/weather.js");
+const fetch = require('node-fetch');
 
 /** @type {MongoClient} */
 let cluster = global.mongoose;
@@ -12,19 +13,19 @@ const getMessage = (hours) => {
   const month = today.getMonth();
 
   if (day === 13 && month === 8) {
-    return 'Feliz dia do programador!';
+    return "Feliz dia do programador!";
   }
 
   if (day === 25 && month === 11) {
-    return 'Feliz natal!';
+    return "Feliz natal!";
   }
 
   if (hours > 17) {
-    return 'Boa noite';
+    return "Boa noite";
   } else if (hours > 12) {
-    return 'Boa tarde';
+    return "Boa tarde";
   } else {
-    return 'Bom dia';
+    return "Bom dia";
   }
 };
 
@@ -49,9 +50,9 @@ const insertVisit = async () => {
   }
 
   if (cluster) {
-    const db = cluster.db('widget');
+    const db = cluster.db("widget");
 
-    const collection = db.collection('visits');
+    const collection = db.collection("visits");
 
     await collection.insertOne(Visit());
 
@@ -65,11 +66,10 @@ const insertVisit = async () => {
 
 /** @param {string} uri */
 const pngToBase64 = async (uri) => {
-  const request = await fetch(uri.replace('//', 'https://'));
+  const request = await fetch(uri.replace("//", "https://"));
   const arrayBuffer = await request.arrayBuffer();
-  return Buffer.from(arrayBuffer).toString('base64');
+  return Buffer.from(arrayBuffer).toString("base64");
 };
-
 
 /** @type {import('express').RequestHandler} */
 module.exports = async (_, res) => {
@@ -77,17 +77,17 @@ module.exports = async (_, res) => {
   const data = await getWeather();
   const { current, location } = data;
   const { condition } = current;
-  const time = location.localtime.split(' ')[1];
-  const hours = parseInt(time.split(':')[0], 10);
+  const time = location.localtime.split(" ")[1];
+  const hours = parseInt(time.split(":")[0], 10);
   const color = getColor(hours);
   const message = getMessage(hours);
 
   const iconBase64 = await pngToBase64(condition.icon);
 
-  res.setHeader('content-type', 'image/svg+xml');
+  res.setHeader("content-type", "image/svg+xml");
   res.setHeader(
-    'cache-control',
-    'max-age=0, no-store, no-cache, must-revalidate'
+    "cache-control",
+    "max-age=0, no-store, no-cache, must-revalidate"
   );
   res.send(
     `
@@ -116,4 +116,4 @@ module.exports = async (_, res) => {
   </svg>
     `
   );
-}
+};

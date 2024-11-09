@@ -43,7 +43,7 @@ const insertVisit = async () => {
   });
 
   return new Promise((resolve, reject) => {
-    db.count({},(err, count) => {
+    db.count({}, (err, count) => {
       if (err) {
         reject(err);
       } else {

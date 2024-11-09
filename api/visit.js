@@ -1,10 +1,7 @@
-const { MongoClient } = require("mongodb");
-const Visit = require("../src/models/Visit.js");
+const {Visit, db } = require("../src/models/Visit.js");
 const { getWeather } = require("../src/weather.js");
 const fetch = require('node-fetch');
 
-/** @type {MongoClient} */
-let cluster = global.mongoose;
 
 /** @param {number} hours */
 const getMessage = (hours) => {
@@ -35,33 +32,20 @@ const getColor = (hours) => {
   return color;
 };
 
-const connectToDataBase = async () => {
-  try {
-    return new MongoClient(process.env.DATABASEURI);
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
 const insertVisit = async () => {
-  if (!cluster) {
-    cluster = await connectToDataBase();
-  }
-
-  if (cluster) {
-    const db = cluster.db("widget");
-
-    const collection = db.collection("visits");
-
-    await collection.insertOne(Visit());
-
-    const visits = await collection.countDocuments();
-
-    return visits;
-  }
-
-  return 0;
+  
+  db.insert(Visit());
+  
+  return new Promise((resolve, reject) => {
+    db.find({}, (err, docs) => {
+      if(err)
+        {
+          reject(err)
+        }else {
+          resolve(docs)
+        }
+    })
+  });
 };
 
 /** @param {string} uri */

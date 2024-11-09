@@ -1,7 +1,6 @@
-const {Visit, db } = require("../src/models/Visit.js");
+const { Visit, db } = require("../src/models/Visit.js");
 const { getWeather } = require("../src/weather.js");
-const fetch = require('node-fetch');
-
+const fetch = require("node-fetch");
 
 /** @param {number} hours */
 const getMessage = (hours) => {
@@ -33,18 +32,24 @@ const getColor = (hours) => {
 };
 
 const insertVisit = async () => {
-  
-  db.insert(Visit());
-  
+  await new Promise((resolve, reject) => {
+    db.insert(Visit(), (err, doc) => {
+      if (err) {
+        rejetc(err);
+      } else {
+        resolve(doc);
+      }
+    });
+  });
+
   return new Promise((resolve, reject) => {
-    db.find({}, (err, docs) => {
-      if(err)
-        {
-          reject(err)
-        }else {
-          resolve(docs)
-        }
-    })
+    db.count({},(err, count) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(count);
+      }
+    });
   });
 };
 
